@@ -29,8 +29,8 @@ const BlogContextProvider = (props) => {
       onValue(query(userRef), (snapshot) => {
         const cards = snapshot.val();
         const cardsArray = [];
-        for (let id in cards) {
-          cardsArray.push({ id, ...cards[id] });
+        for (let index in cards) {
+          cardsArray.push({ index, ...cards[index] });
         }
         setcardList(cardsArray);
         setisLoading(false)
@@ -47,5 +47,6 @@ const BlogContextProvider = (props) => {
     </BlogContext.Provider>
   );
 };
+
 
 export default BlogContextProvider;

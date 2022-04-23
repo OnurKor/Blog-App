@@ -7,18 +7,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
 import { Formik, useFormik } from "formik";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import googleIcon from "../assets/gfavicon.png";
-import { auth } from "../auth/firebase-config";
+import { auth } from "../auth/firebase-config"
 
 const Schema = Yup.object().shape({
   username: Yup.string()
@@ -40,55 +35,48 @@ const Schema = Yup.object().shape({
 });
 
 const Register = () => {
+  
   const navigate = useNavigate();
+
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
-    try {
+    try{
       await signInWithPopup(auth, provider)
-        .then((result) => {
-          const user = result.user;
-          console.log(user);
-          navigate("/");
-        })
-        .catch((err) => {
-          alert(err.message);
-        });
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+      .then((result) => {
+        const user = result.user
+        console.log(user)
+        navigate("/")
+      }).catch((err) => {
+        alert(err.message)
+      })
+    }catch(err) {alert(err.message)}
+  }
 
   const formik = useFormik({
     initialValues: {
       username: "",
       email: "",
       password: "",
-      confirm: "",
+      confirm: ""
     },
     validationSchema: Schema,
     onSubmit: async (values) => {
-      try {
-        let user = await createUserWithEmailAndPassword(
-          auth,
-          values.email,
-          values.password
-        );
-        console.log(user);
-        await updateProfile(auth.currentUser, { displayName: values.username });
-        console.log(auth.currentUser);
-        navigate("/");
-      } catch (err) {
-        alert(err.message);
-      }
-    },
+      try{
+        let user = await createUserWithEmailAndPassword(auth, values.email, values.password)
+        console.log(user)
+        await updateProfile(auth.currentUser, {displayName:values.username})
+        console.log(auth.currentUser)
+        navigate("/")
+      }catch(err){alert(err.message)}
+    }
   });
 
   return (
     <Container
       sx={{
         marginTop: "2rem",
-        marginBottom: "2rem",
+        marginBottom:"2rem",
         height: "auto",
         bgcolor: "background.paper",
         boxShadow: 1,
