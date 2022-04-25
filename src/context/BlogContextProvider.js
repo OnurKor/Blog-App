@@ -1,11 +1,13 @@
-import { getDatabase, onValue, push, query, ref, set } from "firebase/database";
+import { getDatabase, onValue, push, query, ref, remove, set, update } from "firebase/database";
 import React, { createContext, useState } from "react";
+import {  useNavigate } from "react-router-dom";
 
 export const BlogContext = createContext();
 
 const BlogContextProvider = (props) => {
   const [isLoading, setisLoading] = useState();
   const [cardList, setcardList] = useState();
+  // const navigate = useNavigate()
 
   const addNewBlog = (props) => {
     const db = getDatabase();
@@ -17,7 +19,6 @@ const BlogContextProvider = (props) => {
       content: props.content,
       email: props.email,
     });
-    console.log("veri eklendi");
   };
 
   const getBlogs = () => {
@@ -29,8 +30,8 @@ const BlogContextProvider = (props) => {
       onValue(query(userRef), (snapshot) => {
         const cards = snapshot.val();
         const cardsArray = [];
-        for (let index in cards) {
-          cardsArray.push({ index, ...cards[index] });
+        for (let id in cards) {
+          cardsArray.push({ id, ...cards[id] });
         }
         setcardList(cardsArray);
         setisLoading(false)
@@ -41,8 +42,34 @@ const BlogContextProvider = (props) => {
     }
   };
 
+  const updateBlog = (props) => {
+    try {
+      const db = getDatabase()
+      const postData = {
+        title: props.title,
+        imgUrl:props.imgUrl,
+        content:props.content,
+        id:props.id,
+        email:props.email
+      }
+      const updates = {}
+      updates["/contact/" + props.id ] = postData
+      console.log(postData)
+      return update(ref(db), updates)
+    } catch (err) {
+      alert(err.message)
+    }
+  }
+
+  const deleteBlog = (id) => {
+    const db = getDatabase()
+    remove(ref(db,"contact/" + id))
+    // navigate("/")
+    console.log("blog silindi")
+  }
+
   return (
-    <BlogContext.Provider value={{ addNewBlog, getBlogs, isLoading, cardList }}>
+    <BlogContext.Provider value={{deleteBlog, updateBlog, addNewBlog, getBlogs, isLoading, cardList }}>
       {props.children}
     </BlogContext.Provider>
   );
