@@ -7,14 +7,11 @@ const Details = () => {
   const { id } = useParams();
   const { cardList } = useContext(BlogContext);
 
-  const cardDetail = cardList.filter((card) => card.id === id);
+  const [cardDetail] = cardList.filter((card) => card.id === id)
 
   return (
     <div>
-     
-         <DetailsCard cardDetail={cardDetail} />
-
-  
+      <DetailsCard cardDetail={cardDetail} />
     </div>
   );
 };
