@@ -10,29 +10,33 @@ import {
 import { Formik, useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContextProvider";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import { BlogContext } from "../context/BlogContextProvider";
+
+
 
 const NewBlog = () => {
   const navigate = useNavigate();
-  const { currentUser } = useContext(AuthContext);
-  const { addNewBlog } = useContext(BlogContext);
+  const {currentUser} = useContext(AuthContext)
+  const {addNewBlog} = useContext(BlogContext)
 
   const formik = useFormik({
     initialValues: {
       title: "",
       imgUrl: "",
-      content: "",
-      email: currentUser.email,
+      content:"",
+      email:currentUser.email,
     },
-    onSubmit: async (values) => {
-      try {
-        await addNewBlog(values);
-        navigate("/");
-      } catch (err) {
-        alert(err.message);
-      }
+    onSubmit:async (values) => {
+        try {
+          await addNewBlog(values)
+          navigate("/")
+        } catch (err) {
+          alert(err.message)
+        }
+        
     },
+
   });
 
   return (
@@ -54,7 +58,7 @@ const NewBlog = () => {
           bgcolor: "#4CAF50",
         }}
       >
-        <AddCircleOutlineOutlinedIcon />
+        <AddCircleOutlineOutlinedIcon/>
       </Avatar>
 
       <Typography sx={{ margin: "0.5rem" }} variant="h4">
@@ -87,10 +91,12 @@ const NewBlog = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   helperText={formik.touched.imgUrl && formik.errors.imgUrl}
-                  error={formik.touched.imgUrl && Boolean(formik.errors.imgUrl)}
+                  error={
+                    formik.touched.imgUrl && Boolean(formik.errors.imgUrl)
+                  }
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} >
                 <TextField
                   fullWidth
                   multiline
@@ -111,22 +117,19 @@ const NewBlog = () => {
                   }
                 />
               </Grid>
-              <Grid></Grid>
+              <Grid>
+                  
+              </Grid>
               <Grid item xs={12}>
-                <Button
-                  sx={{ backgroundColor: "#4CAF50" }}
-                  fullWidth
-                  item
-                  variant="contained"
-                  type="submit"
-                >
-                  Submit
+                <Button sx={{backgroundColor:'#4CAF50'}}  fullWidth item variant="contained" type="submit">
+                  Submit 
                 </Button>
               </Grid>
             </Grid>
           </form>
         )}
       </Formik>
+      
     </Container>
   );
 };
