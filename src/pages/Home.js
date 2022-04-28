@@ -11,8 +11,6 @@ const Home = () => {
     getBlogs()
   }, [])
   
-  console.log(cardList)
-
   return (
     <div>
       {isLoading ? (
@@ -37,4 +35,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default Home
